@@ -1,0 +1,62 @@
+module Bcd_sevensegment(
+
+input [3:0] b,
+output reg [10:0] out);
+always @ (b) begin
+case(b)
+4'b0000 : out = 11'b00011000000;
+4'b0001 : out = 11'b00011111001;
+4'b0010 : out = 11'b00010100100;
+4'b0011 : out = 11'b00010110000;
+4'b0100 : out = 11'b00010011011;
+4'b0101 : out = 11'b00010010010;
+4'b0110 : out = 11'b00010000011;
+4'b0111 : out = 11'b00011101000;
+4'b1000 : out = 11'b00010000000;
+4'b1001 : out = 11'b00010011000;
+default : out = 0;
+
+endcase
+end
+endmodule
+module frequency_divider(
+input clk,
+output reg [3:0] a);
+reg newclk;
+reg [127:0] n;
+
+initial begin
+
+newclk=0;
+n=0;
+a=0;
+End
+
+always @ (posedge clk) begin
+
+n=n+1;
+
+if (n==128'd50000000) begin
+
+n=0;
+newclk =~ newclk;
+end
+end
+always @ (posedge newclk) begin
+
+a=a+1;
+if (a==4'd10) begin
+a=0;
+end
+end
+endmodule
+module
+seven_segment_counter(
+input clk,
+output [10:0] out);
+
+wire [3:0] x;
+frequency_divider D1(clk,x);
+Bcd_sevensegment D2(x,out);
+
+Endmodule
